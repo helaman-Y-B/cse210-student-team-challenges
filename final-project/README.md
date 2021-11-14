@@ -28,9 +28,9 @@ We are also going to make different levels, which the ball would increase it’s
 
 - What is your timeline? The answer to this question is mostly already decided. Just take a minute to review the rest of the course schedule together.
 
-Helamã: GMT -3
-James: GMT +8
-Nicolas: GMT -4
+- Helamã: GMT -3
+- James: GMT +8
+- Nicolas: GMT -4
 
 We are going to continue to meet as usual, the only difference is that we are going to use more github.
 
