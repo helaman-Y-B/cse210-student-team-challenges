@@ -52,56 +52,18 @@ class PongGame(arcade.Window):
         self.all_sprites.append(self.player2)
 
     def on_key_press(self, symbol, modifiers):
-        """Handle user keyboard input
-        Q: Quit the game
-        P: Pause/Unpause the game
-        I/K: Move Up, Down
-        Arrows: Move Up, Down
-
-        Arguments:
-            symbol {int} -- Which key was pressed
-            modifiers {int} -- Which modifiers were pressed
-        """
-        if symbol == arcade.key.Q:
-            # Quit immediately
-            arcade.close_window()
-
-        if symbol == arcade.key.P:
-            self.paused = not self.paused
-
-        if symbol == arcade.key.W:
-            self.player1.change_y = 5
-
-        if symbol == arcade.key.UP:
-            self.player2.change_y = 5
-
-        if symbol == arcade.key.S:
-            self.player1.change_y = -5
-
-        if symbol == arcade.key.DOWN:
-            self.player2.change_y = -5
+        KeyHandler(self.player1).on_key_press_a(
+            symbol, modifiers)
+        KeyHandler(self.player2).on_key_press_b(
+            symbol, modifiers)
 
     def on_key_release(self, symbol: int, modifiers: int):
-        """Undo movement vectors when movement keys are released
-
-        Arguments:
-            symbol {int} -- Which key was pressed
-            modifiers {int} -- Which modifiers were pressed
-        """
-        if (
-            symbol == arcade.key.UP
-            or symbol == arcade.key.DOWN
-        ):
-            self.player1.change_y = 0
-        if (
-            symbol == arcade.key.W
-            or symbol == arcade.key.S
-        ):
-            self.player2.change_y = 0
+        KeyHandler(self.player1).on_key_release_a(
+            symbol, modifiers)
+        KeyHandler(self.player2).on_key_release_b(
+            symbol, modifiers)
 
     def on_update(self, delta_time: float):
-        # Update everything
-        self.all_sprites.update()
         """for sprite in self.all_sprites:
             sprite.center_x = int(
                 sprite.center_x + sprite.change_x * delta_time
@@ -109,9 +71,11 @@ class PongGame(arcade.Window):
             sprite.center_y = int(
                 sprite.center_y + sprite.change_y * delta_time
             )"""
+        # Update everything
+        self.all_sprites.update()
 
         # Keep the player on screen
-        Update(self.all_sprites)
+        Update(self.all_sprites, self.height).update(delta_time)
 
     def on_draw(self):
         arcade.start_render()
