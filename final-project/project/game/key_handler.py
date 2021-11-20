@@ -7,11 +7,10 @@ class KeyHandler():
         self.player = player
 
     def on_key_press_a(self, symbol, modifiers):
-        """Handle user keyboard input
+        """Handle user keyboard input from player 1
         Q: Quit the game
         P: Pause/Unpause the game
-        I/K: Move Up, Down
-        Arrows: Move Up, Down
+        W/S: Move Up, Down
 
         Arguments:
             symbol {int} -- Which key was pressed
@@ -30,10 +29,10 @@ class KeyHandler():
             self.player.change_y = -5
 
     def on_key_press_b(self, symbol, modifiers):
-        """Handle user keyboard input
+        """Handle user keyboard input from player 2
         Q: Quit the game
         P: Pause/Unpause the game
-        I/K: Move Up, Down
+        W/S: Move Up, Down
         Arrows: Move Up, Down
 
         Arguments:
@@ -48,7 +47,7 @@ class KeyHandler():
             self.player.change_y = -5
 
     def on_key_release_a(self, symbol: int, modifiers: int):
-        """Undo movement vectors when movement keys are released
+        """Undo movement vectors when movement keys are released for player 1
 
         Arguments:
             symbol {int} -- Which key was pressed
@@ -61,7 +60,7 @@ class KeyHandler():
             self.player.change_y = 0
 
     def on_key_release_b(self, symbol: int, modifiers: int):
-        """Undo movement vectors when movement keys are released
+        """Undo movement vectors when movement keys are released for player 2
 
         Arguments:
             symbol {int} -- Which key was pressed
