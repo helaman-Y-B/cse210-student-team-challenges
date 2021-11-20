@@ -1,8 +1,10 @@
 import arcade
+import random
 from game.key_handler import KeyHandler
 from game.on_draw import Draws
 from game.update import Update
 from game.players import Players
+from game.constants import SCALING
 
 
 class PongGame(arcade.Window):
@@ -27,8 +29,12 @@ class PongGame(arcade.Window):
         # Set up the empty Sprites.
         self.players = arcade.SpriteList()
         self.ball = arcade.SpriteList()
+        self.wall_list = arcade.SpriteList()
         self.all_sprites = arcade.SpriteList()
         self._players = Players()
+
+        self.output = ""
+        self.collided = False
 
         self.setup()
 
@@ -47,8 +53,35 @@ class PongGame(arcade.Window):
         self.player2 = self._players.player_maker(
             self.height, "project/game/img/player2_plataform.png", 715)
 
+        # Create horizontal rows of boxes
+        for x in range(0, self.width):
+            # Bottom edge
+            wall = arcade.Sprite(
+                ":resources:images/tiles/boxCrate_double.png", 0.5)
+            wall.center_x = x
+            wall.center_y = 0
+            self.wall_list.append(wall)
+
+            # Top edge
+            wall = arcade.Sprite(
+                ":resources:images/tiles/boxCrate_double.png", 0.5)
+            wall.center_x = x
+            wall.center_y = self.height
+            self.wall_list.append(wall)
+
+        # Create ball
+        ball = arcade.Sprite("project/game/img/ball.png", 0.25)
+        ball.center_x = random.randrange(100, 700)
+        ball.center_y = random.randrange(100, 500)
+        while ball.change_x == 0 and ball.change_y == 0:
+            ball.change_x = random.randrange(-4, 5)
+            ball.change_y = random.randrange(-4, 5)
+
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
+        self.all_sprites.append(ball)
+        self.all_sprites.append(wall)
+        self.ball.append(ball)
 
     def on_key_press(self, symbol, modifiers):
         KeyHandler(self.player1).on_key_press_a(
@@ -74,8 +107,9 @@ class PongGame(arcade.Window):
         self.all_sprites.update()
 
         # Keep the player on screen
-        Update(self.all_sprites, self.height).update(delta_time)
+        Update(self.all_sprites, self.wall_list,
+               self.height).update(delta_time)
         self.draw()
 
     def draw(self):
-        Draws(self.all_sprites).on_draw()
+        Draws(self.all_sprites, self.output).on_draw()
