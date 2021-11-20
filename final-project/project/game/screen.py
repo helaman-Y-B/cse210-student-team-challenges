@@ -1,4 +1,6 @@
 import arcade
+from key_handler import KeyHandler
+from update import Update
 from players import Players
 from constants import SCREEN_HEIGHT, SCALING, SCREEN_TITLE, SCREEN_WIDTH
 #from on_draw import Draws
@@ -27,6 +29,7 @@ class PongGame(arcade.Window):
         self.players = arcade.SpriteList()
         self.ball = arcade.SpriteList()
         self.all_sprites = arcade.SpriteList()
+        self._players = Players()
 
         self.setup()
 
@@ -40,34 +43,20 @@ class PongGame(arcade.Window):
         # Setup the backgound color
         arcade.set_background_color(arcade.color.BLACK)
 
-        # Setup the players
-        # self.player1 = Players().player_maker(
-        #    self.height, "project/game/img/player1_plataform.png")
-        # self.all_sprites.append(self.player1)
-        # self.player2 = Players().player_maker(
-        #    self.height, "project/game/img/player2_plataform.png")
-        # self.all_sprites.append(self.player2)
+        self.player1 = self._players.player_maker(
+            self.height, "game/img/player1_plataform.png", 10)
+        self.player2 = self._players.player_maker(
+            self.height, "game/img/player2_plataform.png", 715)
 
-        # Set up the player
-        self.player1 = arcade.Sprite(
-            "project/game/img/player1_plataform.png", SCALING)
-        self.player1.center_y = self.height / 2
-        self.player1.left = 10
         self.all_sprites.append(self.player1)
-
-        self.player2 = arcade.Sprite(
-            "project/game/img/player2_plataform.png", SCALING)
-        self.player2.center_y = self.height / 2
-        self.player2.left = 715
         self.all_sprites.append(self.player2)
-        # return self.all_sprites
 
     def on_key_press(self, symbol, modifiers):
         """Handle user keyboard input
         Q: Quit the game
         P: Pause/Unpause the game
-        I/J/K/L: Move Up, Left, Down, Right
-        Arrows: Move Up, Left, Down, Right
+        I/K: Move Up, Down
+        Arrows: Move Up, Down
 
         Arguments:
             symbol {int} -- Which key was pressed
@@ -80,11 +69,17 @@ class PongGame(arcade.Window):
         if symbol == arcade.key.P:
             self.paused = not self.paused
 
-        if symbol == arcade.key.I or symbol == arcade.key.UP:
+        if symbol == arcade.key.W:
             self.player1.change_y = 5
 
-        if symbol == arcade.key.K or symbol == arcade.key.DOWN:
+        if symbol == arcade.key.UP:
+            self.player2.change_y = 5
+
+        if symbol == arcade.key.S:
             self.player1.change_y = -5
+
+        if symbol == arcade.key.DOWN:
+            self.player2.change_y = -5
 
     def on_key_release(self, symbol: int, modifiers: int):
         """Undo movement vectors when movement keys are released
@@ -94,12 +89,15 @@ class PongGame(arcade.Window):
             modifiers {int} -- Which modifiers were pressed
         """
         if (
-            symbol == arcade.key.I
-            or symbol == arcade.key.K
-            or symbol == arcade.key.UP
+            symbol == arcade.key.UP
             or symbol == arcade.key.DOWN
         ):
             self.player1.change_y = 0
+        if (
+            symbol == arcade.key.W
+            or symbol == arcade.key.S
+        ):
+            self.player2.change_y = 0
 
     def on_update(self, delta_time: float):
         # Update everything
@@ -113,23 +111,7 @@ class PongGame(arcade.Window):
             )"""
 
         # Keep the player on screen
-        if self.player1.top > self.height:
-            self.player1.top = self.height
-        if self.player1.right > self.width:
-            self.player1.right = self.width
-        if self.player1.bottom < 0:
-            self.player1.bottom = 0
-        if self.player1.left < 0:
-            self.player1.left = 0
-
-        if self.player2.top > self.height:
-            self.player2.top = self.height
-        if self.player2.right > self.width:
-            self.player2.right = self.width
-        if self.player2.bottom < 0:
-            self.player2.bottom = 0
-        if self.player2.left < 0:
-            self.player2.left = 0
+        Update(self.all_sprites)
 
     def on_draw(self):
         arcade.start_render()

@@ -3,12 +3,15 @@ import arcade
 
 class KeyHandler():
 
+    def __init__(self, all_sprites):
+        self.player = all_sprites
+
     def on_key_press(self, symbol, modifiers):
         """Handle user keyboard input
         Q: Quit the game
         P: Pause/Unpause the game
-        I/J/K/L: Move Up, Left, Down, Right
-        Arrows: Move Up, Left, Down, Right
+        I/K: Move Up, Down
+        Arrows: Move Up, Down
 
         Arguments:
             symbol {int} -- Which key was pressed
@@ -21,10 +24,10 @@ class KeyHandler():
         if symbol == arcade.key.P:
             self.paused = not self.paused
 
-        if symbol == arcade.key.I or symbol == arcade.key.UP:
+        if symbol == arcade.key.W or symbol == arcade.key.UP:
             self.player.change_y = 5
 
-        if symbol == arcade.key.K or symbol == arcade.key.DOWN:
+        if symbol == arcade.key.S or symbol == arcade.key.DOWN:
             self.player.change_y = -5
 
     def on_key_release(self, symbol: int, modifiers: int):
@@ -35,8 +38,8 @@ class KeyHandler():
             modifiers {int} -- Which modifiers were pressed
         """
         if (
-            symbol == arcade.key.I
-            or symbol == arcade.key.K
+            symbol == arcade.key.W
+            or symbol == arcade.key.S
             or symbol == arcade.key.UP
             or symbol == arcade.key.DOWN
         ):
