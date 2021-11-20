@@ -43,9 +43,9 @@ class PongGame(arcade.Window):
         arcade.set_background_color(arcade.color.BLACK)
 
         self.player1 = self._players.player_maker(
-            self.height, "game/img/player1_plataform.png", 10)
+            self.height, "project/game/img/player1_plataform.png", 10)
         self.player2 = self._players.player_maker(
-            self.height, "game/img/player2_plataform.png", 715)
+            self.height, "project/game/img/player2_plataform.png", 715)
 
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
