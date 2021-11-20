@@ -1,5 +1,5 @@
 import arcade
-from constants import SCALING
+from game.constants import SCALING
 
 
 class Players():
