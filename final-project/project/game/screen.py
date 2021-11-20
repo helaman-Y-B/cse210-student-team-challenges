@@ -3,9 +3,6 @@ from game.key_handler import KeyHandler
 from game.on_draw import Draws
 from game.update import Update
 from game.players import Players
-from game.constants import SCREEN_HEIGHT, SCALING, SCREEN_TITLE, SCREEN_WIDTH
-#from on_draw import Draws
-# In case you will run the code in the screen.py, remeber to remove game. from all the imported classes.
 
 
 class PongGame(arcade.Window):
@@ -32,6 +29,8 @@ class PongGame(arcade.Window):
         self.ball = arcade.SpriteList()
         self.all_sprites = arcade.SpriteList()
         self._players = Players()
+
+        self.setup()
 
     def setup(self):
         """Sets the background color, the players,
@@ -76,11 +75,7 @@ class PongGame(arcade.Window):
 
         # Keep the player on screen
         Update(self.all_sprites, self.height).update(delta_time)
+        self.draw()
 
     def draw(self):
         Draws(self.all_sprites).on_draw()
-
-
-if __name__ == "__main__":
-    app = PongGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    arcade.run()
