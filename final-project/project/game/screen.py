@@ -87,10 +87,6 @@ class PongGame(arcade.Window):
             limits.center_y = y
             self.limit_list.append(limits)
 
-
-
-
-
         # Create ball
         ball = arcade.Sprite("game/img/ball.png", 0.25)
         ball.center_x = random.randrange(100, 700)
