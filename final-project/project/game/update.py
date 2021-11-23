@@ -1,12 +1,16 @@
-from game.players import Players
-from game.screen import PongGame
+import arcade
 
 
-class Update(Players, PongGame):
+class Update():
 
-    def on_update(self, delta_time: float):
-        # Update everything
-        self.all_sprites.update()
+    def __init__(self, all_sprites, wall_list, players_list, limit_list, height):
+        self.sprite = all_sprites
+        self.height = height
+        self.wall_list = wall_list
+        self.players_list = players_list
+        self.limit_list = limit_list
+
+    def update(self, delta_time: float):
         """for sprite in self.all_sprites:
             sprite.center_x = int(
                 sprite.center_x + sprite.change_x * delta_time
@@ -16,20 +20,99 @@ class Update(Players, PongGame):
             )"""
 
         # Keep the player on screen
-        if self.player1.top > self.height:
-            self.player1.top = self.height
-        if self.player1.right > self.width:
-            self.player1.right = self.width
-        if self.player1.bottom < 0:
-            self.player1.bottom = 0
-        if self.player1.left < 0:
-            self.player1.left = 0
+        if self.sprite[0].top > self.height:
+            self.sprite[0].top = self.height
+        if self.sprite[1].top > self.height:
+            self.sprite[1].top = self.height
+        if self.sprite[0].bottom < 0:
+            self.sprite[0].bottom = 0
+        if self.sprite[1].bottom < 0:
+            self.sprite[1].bottom = 0
 
-        if self.player2.top > self.height:
-            self.player2.top = self.height
-        if self.player2.right > self.width:
-            self.player2.right = self.width
-        if self.player2.bottom < 0:
-            self.player2.bottom = 0
-        if self.player2.left < 0:
-            self.player2.left = 0
+        # This part of code will close the screen if there is no bottom or top wall hit
+        # if not(self.wall_hit_collided):
+        #     arcade.close_window()
+
+        # for self.sprite[2]:
+
+        self.sprite[2].center_x += self.sprite[2].change_x
+        walls_hit = arcade.check_for_collision_with_list(
+            self.sprite[2], self.wall_list)
+        for wall in walls_hit:
+            if self.sprite[2].change_x > 0:
+                self.sprite[2].right = wall.left
+            elif self.sprite[2].change_x < 0:
+                self.sprite[2].left = wall.right
+        if len(walls_hit) > 0:
+            self.sprite[2].change_x *= -1
+
+        limits_hit = arcade.check_for_collision_with_list(
+            self.sprite[2], self.limit_list)
+        for limit in limits_hit:
+            if self.sprite[2].change_x > 0:
+                print("you lose")
+                self.sprite[2].right = limit.left
+            elif self.sprite[2].change_x < 0:
+                print("you lose")
+                self.sprite[2].left = limit.right
+        if len(limits_hit) > 0:
+            self.sprite[2].change_x *= -1
+            print("you lose")
+        
+        player_hit = arcade.check_for_collision_with_list(
+            self.sprite[2], self.players_list)
+        for player in player_hit:
+            if self.sprite[2].change_x > 0:
+                self.sprite[2].right = player.left
+            elif self.sprite[2].change_x < 0:
+                self.sprite[2].left = player.right
+        if len(player_hit) > 0:
+            self.sprite[2].change_x *= -1
+
+
+
+        self.sprite[2].center_y += self.sprite[2].change_y
+        walls_hit = arcade.check_for_collision_with_list(
+            self.sprite[2], self.wall_list)
+        for wall in walls_hit:
+            if self.sprite[2].change_y > 0:
+                self.sprite[2].top = wall.bottom
+            elif self.sprite[2].change_y < 0:
+                self.sprite[2].bottom = wall.top
+        if len(walls_hit) > 0:
+            self.sprite[2].change_y *= -1
+
+
+        limits_hit = arcade.check_for_collision_with_list(
+            self.sprite[2], self.limit_list)
+        for limit in limits_hit:
+            if self.sprite[2].change_y > 0:
+                self.sprite[2].top = limit.bottom
+            elif self.sprite[2].change_y < 0:
+                self.sprite[2].bottom = limit.top
+        if len(limits_hit) > 0:
+            self.sprite[2].change_y *= -1
+
+        player_hit = arcade.check_for_collision_with_list(
+            self.sprite[2], self.players_list)
+        for player in player_hit:
+            if self.sprite[2].change_y > 0:
+                
+                self.sprite[2].top = player.bottom
+            elif self.sprite[2].change_y < 0:
+                self.sprite[2].bottom = player.top
+        if len(player_hit) > 0:
+            self.sprite[2].change_y *= -1
+
+
+
+        # the following line of code is not working as is
+        # Did we hit bottom and top wall? If true continue
+        # if self.sprite[2].collides_with_list(self.wall_list):
+        #    self.collided = True
+        # else:
+        #    self.collided = False
+        player_inter = arcade.check_for_collision_with_list(self.sprite[0], self.wall_list)
+        if len(player_inter) > 0:
+            self.sprite[0].change_x = 0
+            print("touching")

@@ -1,7 +1,10 @@
 import arcade
-from players import Players
-from constants import SCREEN_HEIGHT, SCALING, SCREEN_TITLE, SCREEN_WIDTH
-#from on_draw import Draws
+import random
+from game.key_handler import KeyHandler
+from game.on_draw import Draws
+from game.update import Update
+from game.players import Players
+from game.constants import SCALING
 
 
 class PongGame(arcade.Window):
@@ -26,7 +29,13 @@ class PongGame(arcade.Window):
         # Set up the empty Sprites.
         self.players = arcade.SpriteList()
         self.ball = arcade.SpriteList()
+        self.wall_list = arcade.SpriteList()
+        self.limit_list = arcade.SpriteList()
         self.all_sprites = arcade.SpriteList()
+        self._players = Players()
+
+        self.output = ""
+        self.collided = False
 
         self.setup()
 
@@ -40,70 +49,75 @@ class PongGame(arcade.Window):
         # Setup the backgound color
         arcade.set_background_color(arcade.color.BLACK)
 
-        # Setup the players
-        # self.player1 = Players().player_maker(
-        #    self.height, "project/game/img/player1_plataform.png")
-        # self.all_sprites.append(self.player1)
-        # self.player2 = Players().player_maker(
-        #    self.height, "project/game/img/player2_plataform.png")
-        # self.all_sprites.append(self.player2)
+        self.player1 = self._players.player_maker(
+            self.height, "game/img/player1_plataform.png", 10)
+        self.player2 = self._players.player_maker(
+            self.height, "game/img/player2_plataform.png", 715)
 
-        # Set up the player
-        self.player1 = arcade.Sprite(
-            "project/game/img/player1_plataform.png", SCALING)
-        self.player1.center_y = self.height / 2
-        self.player1.left = 10
+        # Create horizontal rows of boxes
+        for x in range(0, self.width):
+            # Bottom edge
+            wall = arcade.Sprite(
+                ":resources:images/tiles/boxCrate_double.png", 0.5)
+            wall.center_x = x
+            wall.center_y = 0
+            self.wall_list.append(wall)
+
+            # Top edge
+            wall = arcade.Sprite(
+                ":resources:images/tiles/boxCrate_double.png", 0.5)
+            wall.center_x = x
+            wall.center_y = self.height
+            self.wall_list.append(wall)
+
+            
+
+        for y in range(0, self.height):
+            # Bottom edge
+            limits = arcade.Sprite(
+                ":resources:images/tiles/boxCrate_double.png", 0.5)
+            limits.center_x = 0
+            limits.center_y = y
+            self.limit_list.append(limits)
+
+            # Top edge
+            limits = arcade.Sprite(
+                ":resources:images/tiles/boxCrate_double.png", 0.5)
+            limits.center_x = self.width-10
+            limits.center_y = y
+            self.limit_list.append(limits)
+
+        # Create ball
+        ball = arcade.Sprite("game/img/ball.png", 0.25)
+        ball.center_x = random.randrange(100, 700)
+        ball.center_y = random.randrange(100, 500)
+        while ball.change_x == 0 and ball.change_y == 0:
+            ball.change_x = random.randrange(-4, 5)
+            ball.change_y = random.randrange(-4, 5)
+
         self.all_sprites.append(self.player1)
-
-        self.player2 = arcade.Sprite(
-            "project/game/img/player2_plataform.png", SCALING)
-        self.player2.center_y = self.height / 2
-        self.player2.left = 715
         self.all_sprites.append(self.player2)
-        # return self.all_sprites
+        self.all_sprites.append(ball)
+        #self.all_sprites.append(self.wall_list)
+        for i in self.wall_list:
+            self.all_sprites.append(i)
+        self.players.append(self.player1)
+        self.players.append(self.player2)
+        self.ball.append(ball)
 
     def on_key_press(self, symbol, modifiers):
-        """Handle user keyboard input
-        Q: Quit the game
-        P: Pause/Unpause the game
-        I/J/K/L: Move Up, Left, Down, Right
-        Arrows: Move Up, Left, Down, Right
-
-        Arguments:
-            symbol {int} -- Which key was pressed
-            modifiers {int} -- Which modifiers were pressed
-        """
-        if symbol == arcade.key.Q:
-            # Quit immediately
-            arcade.close_window()
-
-        if symbol == arcade.key.P:
-            self.paused = not self.paused
-
-        if symbol == arcade.key.I or symbol == arcade.key.UP:
-            self.player1.change_y = 5
-
-        if symbol == arcade.key.K or symbol == arcade.key.DOWN:
-            self.player1.change_y = -5
+        KeyHandler(self.player1).on_key_press_a(
+            symbol, modifiers)
+        KeyHandler(self.player2).on_key_press_b(
+            symbol, modifiers)
 
     def on_key_release(self, symbol: int, modifiers: int):
-        """Undo movement vectors when movement keys are released
-
-        Arguments:
-            symbol {int} -- Which key was pressed
-            modifiers {int} -- Which modifiers were pressed
-        """
-        if (
-            symbol == arcade.key.I
-            or symbol == arcade.key.K
-            or symbol == arcade.key.UP
-            or symbol == arcade.key.DOWN
-        ):
-            self.player1.change_y = 0
+        KeyHandler(self.player1).on_key_release_a(
+            symbol, modifiers)
+        KeyHandler(self.player2).on_key_release_b(
+            symbol, modifiers)
 
     def on_update(self, delta_time: float):
-        # Update everything
-        self.all_sprites.update()
         """for sprite in self.all_sprites:
             sprite.center_x = int(
                 sprite.center_x + sprite.change_x * delta_time
@@ -111,31 +125,13 @@ class PongGame(arcade.Window):
             sprite.center_y = int(
                 sprite.center_y + sprite.change_y * delta_time
             )"""
+        # Update everything
+        self.all_sprites.update()
 
         # Keep the player on screen
-        if self.player1.top > self.height:
-            self.player1.top = self.height
-        if self.player1.right > self.width:
-            self.player1.right = self.width
-        if self.player1.bottom < 0:
-            self.player1.bottom = 0
-        if self.player1.left < 0:
-            self.player1.left = 0
+        Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
+               self.height).update(delta_time)
+        self.draw()
 
-        if self.player2.top > self.height:
-            self.player2.top = self.height
-        if self.player2.right > self.width:
-            self.player2.right = self.width
-        if self.player2.bottom < 0:
-            self.player2.bottom = 0
-        if self.player2.left < 0:
-            self.player2.left = 0
-
-    def on_draw(self):
-        arcade.start_render()
-        self.all_sprites.draw()
-
-
-if __name__ == "__main__":
-    app = PongGame(SCREEN_WIDTH, SCREEN_WIDTH, SCREEN_TITLE)
-    arcade.run()
+    def draw(self):
+        Draws(self.all_sprites, self.output).on_draw()
