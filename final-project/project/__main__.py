@@ -7,9 +7,8 @@ from game.update import Update
 
 def main():
     # Create a new Pong Game window
-    pong_game = PongGame(int(SCREEN_WIDTH * SCALING),
-                         int(SCREEN_HEIGHT * SCALING), SCREEN_TITLE)
-    # Run the game
+    PongGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    # Run the game again
     arcade.run()
 
 
