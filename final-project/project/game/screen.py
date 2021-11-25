@@ -50,9 +50,9 @@ class PongGame(arcade.Window):
         arcade.set_background_color(arcade.color.BLACK)
 
         self.player1 = self._players.player_maker(
-            self.height, "game/img/player1_plataform.png", 10)
+            self.height, "project/game/img/player1_plataform.png", 10)
         self.player2 = self._players.player_maker(
-            self.height, "game/img/player2_plataform.png", 715)
+            self.height, "project/game/img/player2_plataform.png", 715)
 
         # Create horizontal rows of boxes
         for x in range(0, self.width):
@@ -70,8 +70,6 @@ class PongGame(arcade.Window):
             wall.center_y = self.height
             self.wall_list.append(wall)
 
-            
-
         for y in range(0, self.height):
             # Bottom edge
             limits = arcade.Sprite(
@@ -88,7 +86,7 @@ class PongGame(arcade.Window):
             self.limit_list.append(limits)
 
         # Create ball
-        ball = arcade.Sprite("game/img/ball.png", 0.25)
+        ball = arcade.Sprite("project/game/img/ball.png", 0.25)
         ball.center_x = random.randrange(100, 700)
         ball.center_y = random.randrange(100, 500)
         while ball.change_x == 0 and ball.change_y == 0:
@@ -98,7 +96,7 @@ class PongGame(arcade.Window):
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
         self.all_sprites.append(ball)
-        #self.all_sprites.append(self.wall_list)
+        # self.all_sprites.append(self.wall_list)
         for i in self.wall_list:
             self.all_sprites.append(i)
         self.players.append(self.player1)
