@@ -4,7 +4,7 @@ from game.key_handler import KeyHandler
 from game.on_draw import Draws
 from game.update import Update
 from game.players import Players
-from game.constants import SCALING
+from game.box_draw import BoxDrawer
 
 
 class PongGame(arcade.Window):
@@ -33,6 +33,8 @@ class PongGame(arcade.Window):
         self.limit_list = arcade.SpriteList()
         self.all_sprites = arcade.SpriteList()
         self._players = Players()
+        self.score_player1 = 0
+        self.score_player2 = 0
 
         self.output = ""
         self.collided = False
@@ -47,43 +49,36 @@ class PongGame(arcade.Window):
         sounds/musics."""
 
         # Setup the backgound color
-        arcade.set_background_color(arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.GRAY)
 
         self.player1 = self._players.player_maker(
             self.height, "project/game/img/player1_plataform.png", 10)
         self.player2 = self._players.player_maker(
             self.height, "project/game/img/player2_plataform.png", 715)
 
+        self.all_sprites.append(self.player1)
+        self.all_sprites.append(self.player2)
+
+        # self.all_sprites.append(self.score)
+
         # Create horizontal rows of boxes
         for x in range(0, self.width):
             # Bottom edge
-            wall = arcade.Sprite(
-                ":resources:images/tiles/boxCrate_double.png", 0.5)
-            wall.center_x = x
-            wall.center_y = 0
-            self.wall_list.append(wall)
+            self.wall_list.append(BoxDrawer.box_drawer(
+                x, self.height, self.width, "xbottom"))
 
             # Top edge
-            wall = arcade.Sprite(
-                ":resources:images/tiles/boxCrate_double.png", 0.5)
-            wall.center_x = x
-            wall.center_y = self.height
-            self.wall_list.append(wall)
+            self.wall_list.append(BoxDrawer.box_drawer(
+                x, self.height, self.width, "xtop"))
 
         for y in range(0, self.height):
             # Bottom edge
-            limits = arcade.Sprite(
-                ":resources:images/tiles/boxCrate_double.png", 0.5)
-            limits.center_x = 0
-            limits.center_y = y
-            self.limit_list.append(limits)
+            self.limit_list.append(BoxDrawer.box_drawer(
+                y, self.height, self.width, "ybottom"))
 
             # Top edge
-            limits = arcade.Sprite(
-                ":resources:images/tiles/boxCrate_double.png", 0.5)
-            limits.center_x = self.width-10
-            limits.center_y = y
-            self.limit_list.append(limits)
+            self.limit_list.append(BoxDrawer.box_drawer(
+                y, self.height, self.width, "ytop"))
 
         # Create ball
         ball = arcade.Sprite("project/game/img/ball.png", 0.25)
@@ -93,10 +88,8 @@ class PongGame(arcade.Window):
             ball.change_x = random.randrange(-4, 5)
             ball.change_y = random.randrange(-4, 5)
 
-        self.all_sprites.append(self.player1)
-        self.all_sprites.append(self.player2)
         self.all_sprites.append(ball)
-        # self.all_sprites.append(self.wall_list)
+
         for i in self.wall_list:
             self.all_sprites.append(i)
         self.players.append(self.player1)
@@ -128,8 +121,8 @@ class PongGame(arcade.Window):
 
         # Keep the player on screen
         Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
-               self.height).update(delta_time)
+               self.height, self.score_player1).update(delta_time)
         self.draw()
 
     def draw(self):
-        Draws(self.all_sprites, self.output).on_draw()
+        Draws(self.all_sprites, self.output, self.score_player1).on_draw()
