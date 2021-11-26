@@ -1,8 +1,6 @@
 import arcade
 from game.screen import PongGame
-from game.on_draw import Draws
-from game.constants import SCALING, SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_TITLE
-from game.update import Update
+from game.constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_TITLE
 
 
 def main():

@@ -1,5 +1,4 @@
 import arcade
-import os
 import random
 
 SPRITE_SCALING = 0.5
@@ -66,7 +65,6 @@ class MyGame(arcade.Window):
 
         self.ball_list.append(ball)
 
-        # Set the background color
     def on_draw(self):
         """
         Render the screen.
