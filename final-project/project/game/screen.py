@@ -5,6 +5,7 @@ from game.on_draw import Draws
 from game.update import Update
 from game.players import Players
 from game.box_draw import BoxDrawer
+from game.score import Score
 
 
 class PongGame(arcade.Window):
@@ -18,7 +19,14 @@ class PongGame(arcade.Window):
     Attributes:
         self.players: a SpriteList() for the two players.
         self.ball: a SpriteList() for the game ball.
-        self.all_sprites: a SpriteList() for all the sprites (players and ball)"""
+        self.wall_list: a SpriteList() for the walls.
+        self.limits_list: a SpriteList() for the limits of the game screen for objects.
+        self.all_sprites: a SpriteList() for all the sprites (players and ball).
+        self._players: the Players() class.
+        self.output: a string.
+        self.collided: a boolean value.
+        self.score_p1: a interger value.
+        self.score_p1: a interger value."""
 
     def __init__(self, width: int, height: int, title: str):
         """The constructor class, which
@@ -33,11 +41,11 @@ class PongGame(arcade.Window):
         self.limit_list = arcade.SpriteList()
         self.all_sprites = arcade.SpriteList()
         self._players = Players()
-        self.score_player1 = 0
-        self.score_player2 = 0
 
         self.output = ""
         self.collided = False
+        self.score_p1 = 0
+        self.score_p2 = 0
 
         self.setup()
 
@@ -119,10 +127,29 @@ class PongGame(arcade.Window):
         # Update everything
         self.all_sprites.update()
 
+        # This part is responsible for detecting when a player gets a point
+        limits_hit = arcade.check_for_collision_with_list(
+            self.all_sprites[2], self.limit_list)
+
+        for limit in limits_hit:
+            if self.all_sprites[2].change_x > 0:
+                self.score_p1 += 1
+                self.all_sprites[2].right = limit.left
+
+            elif self.all_sprites[2].change_x < 0:
+                self.score_p2 += 1
+                self.all_sprites[2].left = limit.right
+
+        if len(limits_hit) > 0:
+            self.all_sprites[2].change_x *= -1
+
         # Keep the player on screen
         Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
-               self.height, self.score_player1).update(delta_time)
+               self.height).update(delta_time)
+
         self.draw()
 
     def draw(self):
-        Draws(self.all_sprites, self.output, self.score_player1).on_draw()
+        """Draws all the information unto the screen."""
+        Draws(self.all_sprites, self.output).on_draw()
+        Score.draw_score(self)

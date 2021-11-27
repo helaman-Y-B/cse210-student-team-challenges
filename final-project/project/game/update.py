@@ -1,15 +1,18 @@
 import arcade
 
+#from game.score import Score
+
 
 class Update():
 
-    def __init__(self, all_sprites, wall_list, players_list, limit_list, height, score):
+    def __init__(self, all_sprites, wall_list, players_list, limit_list, height):
         self.sprite = all_sprites
         self.height = height
         self.wall_list = wall_list
         self.players_list = players_list
         self.limit_list = limit_list
-        self.player_score = score
+
+        #self.player_score = None
 
     def update(self, delta_time: float):
         """for sprite in self.all_sprites:
@@ -34,8 +37,6 @@ class Update():
         # if not(self.wall_hit_collided):
         #     arcade.close_window()
 
-        # for self.sprite[2]:
-
         self.sprite[2].center_x += self.sprite[2].change_x
         walls_hit = arcade.check_for_collision_with_list(
             self.sprite[2], self.wall_list)
@@ -47,28 +48,7 @@ class Update():
         if len(walls_hit) > 0:
             self.sprite[2].change_x *= -1
 
-        limits_hit = arcade.check_for_collision_with_list(
-            self.sprite[2], self.limit_list)
-        for limit in limits_hit:
-            if self.sprite[2].change_x > 0:
-                print("you lose")
-                self.sprite[2].right = limit.left
-                #self.score_player1 + 1
-                #self.score_player2 + 1
-                self.send_current_score()
-            elif self.sprite[2].change_x < 0:
-                print("you lose")
-                #self.score_player1 + 1
-                #self.score_player2 + 1
-                self.send_current_score()
-                self.sprite[2].left = limit.right
-        if len(limits_hit) > 0:
-            self.sprite[2].change_x *= -1
-            print("you lose")
-            #self.score_player1 + 1
-            #self.score_player2 + 1
-            self.send_current_score()
-
+        # Check colision of the ball with the players
         player_hit = arcade.check_for_collision_with_list(
             self.sprite[2], self.players_list)
         for player in player_hit:
@@ -79,6 +59,7 @@ class Update():
         if len(player_hit) > 0:
             self.sprite[2].change_x *= -1
 
+        # Check colision of the ball with the wall
         self.sprite[2].center_y += self.sprite[2].change_y
         walls_hit = arcade.check_for_collision_with_list(
             self.sprite[2], self.wall_list)
@@ -90,6 +71,7 @@ class Update():
         if len(walls_hit) > 0:
             self.sprite[2].change_y *= -1
 
+        # Check colision of the ball with the screen limits
         limits_hit = arcade.check_for_collision_with_list(
             self.sprite[2], self.limit_list)
         for limit in limits_hit:
@@ -100,6 +82,7 @@ class Update():
         if len(limits_hit) > 0:
             self.sprite[2].change_y *= -1
 
+        # Check colision of the player with the ball
         player_hit = arcade.check_for_collision_with_list(
             self.sprite[2], self.players_list)
         for player in player_hit:
@@ -111,11 +94,13 @@ class Update():
         if len(player_hit) > 0:
             self.sprite[2].change_y *= -1
 
+        # Check colision of the player with the wall
         player_inter = arcade.check_for_collision_with_list(
             self.sprite[0], self.wall_list)
         if len(player_inter) > 0:
             self.sprite[0].change_x = 0
             # print("touching")
 
-    def send_current_score(self):
-        self.player_score + 1
+    def update_score(self):
+        self.score += 1
+        return self.score
