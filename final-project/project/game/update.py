@@ -72,15 +72,15 @@ class Update():
             self.sprite[2].change_y *= -1
 
         # Check colision of the ball with the screen limits
-        limits_hit = arcade.check_for_collision_with_list(
-            self.sprite[2], self.limit_list)
-        for limit in limits_hit:
-            if self.sprite[2].change_y > 0:
-                self.sprite[2].top = limit.bottom
-            elif self.sprite[2].change_y < 0:
-                self.sprite[2].bottom = limit.top
-        if len(limits_hit) > 0:
-            self.sprite[2].change_y *= -1
+        # limits_hit = arcade.check_for_collision_with_list(
+        #    self.sprite[2], self.limit_list)
+        # for limit in limits_hit:
+        #    if self.sprite[2].change_y > 0:
+        #        self.sprite[2].top = limit.bottom
+        #    if self.sprite[2].change_y < 0:
+        #        self.sprite[2].bottom = limit.top
+        # if len(limits_hit) > 0:
+        #    self.sprite[2].change_y *= -1
 
         # Check colision of the player with the ball
         player_hit = arcade.check_for_collision_with_list(
@@ -89,7 +89,7 @@ class Update():
             if self.sprite[2].change_y > 0:
 
                 self.sprite[2].top = player.bottom
-            elif self.sprite[2].change_y < 0:
+            if self.sprite[2].change_y < 0:
                 self.sprite[2].bottom = player.top
         if len(player_hit) > 0:
             self.sprite[2].change_y *= -1

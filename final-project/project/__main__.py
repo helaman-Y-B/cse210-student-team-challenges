@@ -1,5 +1,4 @@
 import arcade
-from game.screen import PongGame
 from game.constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from game.main_window.mainmenuwindow import MainMenuView
 

@@ -1,6 +1,5 @@
 import arcade
 import random
-from game.constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from game.key_handler import KeyHandler
 from game.on_draw import Draws
 from game.update import Update
@@ -136,12 +135,14 @@ class PongGame(arcade.View):
 
         for limit in limits_hit:
             if self.all_sprites[2].change_x > 0:
+                self.all_sprites[2].center_x = random.randrange(200, 700)
+                self.all_sprites[2].center_y = random.randrange(200, 500)
                 self.score_p1 += 1
-                self.all_sprites[2].right = limit.left
 
             elif self.all_sprites[2].change_x < 0:
+                self.all_sprites[2].center_x = random.randrange(400, 500)
+                self.all_sprites[2].center_y = random.randrange(200, 500)
                 self.score_p2 += 1
-                self.all_sprites[2].left = limit.right
 
         if len(limits_hit) > 0:
             self.all_sprites[2].change_x *= -1
