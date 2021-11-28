@@ -1,12 +1,14 @@
 import arcade
 from game.screen import PongGame
-from game.constants import SCREEN_HEIGHT, SCREEN_WIDTH, SCREEN_TITLE
+from game.constants import SCREEN_HEIGHT, SCREEN_WIDTH
+from game.main_window.mainmenuwindow import MainMenuView
 
 
 def main():
-    # Create a new Pong Game window
-    PongGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
-    # Run the game again
+
+    window = arcade.Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Menu")
+    start_view = MainMenuView()
+    window.show_view(start_view)
     arcade.run()
 
 

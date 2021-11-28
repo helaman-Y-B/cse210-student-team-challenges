@@ -1,5 +1,6 @@
 import arcade
 import random
+from game.constants import SCREEN_HEIGHT, SCREEN_WIDTH
 from game.key_handler import KeyHandler
 from game.on_draw import Draws
 from game.update import Update
@@ -8,7 +9,7 @@ from game.box_draw import BoxDrawer
 from game.score import Score
 
 
-class PongGame(arcade.Window):
+class PongGame(arcade.View):
     """Pong game is a game with to players
     where they try to get the ball reaches
     the enemy side so that they can make points.
@@ -32,7 +33,7 @@ class PongGame(arcade.Window):
         """The constructor class, which
         makes the screen game to appear."""
 
-        super().__init__(width, height, title)
+        super().__init__()
 
         # Set up the empty Sprites.
         self.players = arcade.SpriteList()
@@ -42,12 +43,14 @@ class PongGame(arcade.Window):
         self.all_sprites = arcade.SpriteList()
         self._players = Players()
 
+        self.height = height
+        self.width = width
+        self.title = title
+
         self.output = ""
         self.collided = False
         self.score_p1 = 0
         self.score_p2 = 0
-
-        self.setup()
 
     def setup(self):
         """Sets the background color, the players,
@@ -60,9 +63,9 @@ class PongGame(arcade.Window):
         arcade.set_background_color(arcade.color.GRAY)
 
         self.player1 = self._players.player_maker(
-            self.height, "project/game/img/player1_plataform.png", 10)
+            self.height, "game/img/player1_plataform.png", 10)
         self.player2 = self._players.player_maker(
-            self.height, "project/game/img/player2_plataform.png", 715)
+            self.height, "game/img/player2_plataform.png", 715)
 
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
@@ -89,7 +92,7 @@ class PongGame(arcade.Window):
                 y, self.height, self.width, "ytop"))
 
         # Create ball
-        ball = arcade.Sprite("project/game/img/ball.png", 0.25)
+        ball = arcade.Sprite("game/img/ball.png", 0.25)
         ball.center_x = random.randrange(100, 700)
         ball.center_y = random.randrange(100, 500)
         while ball.change_x == 0 and ball.change_y == 0:
