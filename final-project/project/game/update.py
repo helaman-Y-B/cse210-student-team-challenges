@@ -37,16 +37,18 @@ class Update():
         # if not(self.wall_hit_collided):
         #     arcade.close_window()
 
-        self.sprite[2].center_x += self.sprite[2].change_x
-        walls_hit = arcade.check_for_collision_with_list(
-            self.sprite[2], self.wall_list)
-        for wall in walls_hit:
-            if self.sprite[2].change_x > 0:
-                self.sprite[2].right = wall.left
-            elif self.sprite[2].change_x < 0:
-                self.sprite[2].left = wall.right
-        if len(walls_hit) > 0:
-            self.sprite[2].change_x *= -1
+        """This part was bugging the ball colision."""
+        #self.sprite[2].center_x += self.sprite[2].change_x
+        # walls_hit = arcade.check_for_collision_with_list(
+        #    self.sprite[2], self.wall_list)
+        # for wall in walls_hit:
+        #    if self.sprite[2].change_x > 0:
+        #        self.sprite[2].right = wall.left
+        #    elif self.sprite[2].change_x < 0:
+        #        self.sprite[2].left = wall.right
+        # if len(walls_hit) > 0:
+        #    self.sprite[2].change_x *= -1
+        #    print("Colision with wall the first")
 
         # Check colision of the ball with the players
         player_hit = arcade.check_for_collision_with_list(
@@ -57,7 +59,10 @@ class Update():
             elif self.sprite[2].change_x < 0:
                 self.sprite[2].left = player.right
         if len(player_hit) > 0:
-            self.sprite[2].change_x *= -1
+            self.sprite[2].change_x *= -1.1
+            print("Colision with player")
+            x_position = self.sprite[2]._get_center_x()
+            print(f"X: {x_position}")
 
         # Check colision of the ball with the wall
         self.sprite[2].center_y += self.sprite[2].change_y
@@ -70,6 +75,9 @@ class Update():
                 self.sprite[2].bottom = wall.top
         if len(walls_hit) > 0:
             self.sprite[2].change_y *= -1
+            print("Colision with wall")
+            x_position = self.sprite[2]._get_center_x()
+            print(f"X: {x_position}")
 
         # Check colision of the ball with the screen limits
         # limits_hit = arcade.check_for_collision_with_list(
