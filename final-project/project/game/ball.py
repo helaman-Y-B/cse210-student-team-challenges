@@ -56,9 +56,9 @@ class MyGame(arcade.Window):
             self.wall_list.append(wall)
 
         # Create ball
-        ball = arcade.Sprite("project/game/img/ball.png", 0.25)
+        ball = arcade.Sprite("game/img/ball.png", 0.25)
         ball.center_x = random.randrange(100, 700)
-        ball.center_y = random.randrange(100, 500)
+        ball.center_y = 250
         while ball.change_x == 0 and ball.change_y == 0:
             ball.change_x = random.randrange(-4, 5)
             ball.change_y = random.randrange(-4, 5)
@@ -93,8 +93,10 @@ class MyGame(arcade.Window):
             for wall in walls_hit:
                 if ball.change_x > 0:
                     ball.right = wall.left
+                    print(ball.right)
                 elif ball.change_x < 0:
                     ball.left = wall.right
+                    print(ball.left)
             if len(walls_hit) > 0:
                 ball.change_x *= -1
 
@@ -108,6 +110,7 @@ class MyGame(arcade.Window):
                     ball.bottom = wall.top
             if len(walls_hit) > 0:
                 ball.change_y *= -1
+                print(f"ball x coordinates {ball._get_center_x()}")
 
         # the following line of code is not working as is
         # Did we hit bottom and top wall? If true continue
