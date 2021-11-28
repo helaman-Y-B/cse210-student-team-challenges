@@ -135,13 +135,13 @@ class PongGame(arcade.View):
 
         for limit in limits_hit:
             if self.all_sprites[2].change_x > 0:
-                self.all_sprites[2].center_x = random.randrange(200, 700)
-                self.all_sprites[2].center_y = random.randrange(200, 500)
+                self.all_sprites[2].center_x = random.randrange(400, 500)
+                self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].top = limit.bottom
 
             elif self.all_sprites[2].change_x < 0:
                 self.all_sprites[2].center_x = random.randrange(400, 500)
-                self.all_sprites[2].center_y = random.randrange(200, 500)
+                self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].bottom = limit.top
 
         x_position = self.all_sprites[2]._get_center_x()
@@ -150,11 +150,11 @@ class PongGame(arcade.View):
         if len(limits_hit) > 0:
             self.all_sprites[2].change_x *= -1
 
-        if x_position >= 740:
+        if round(x_position) >= 740:
             self.score_p1 += 1
             print("After p1 points")
 
-        elif x_position <= 54:
+        elif round(x_position) <= 54:
             self.score_p2 += 1
             print("After p2 points")
 
