@@ -58,5 +58,3 @@ class MainMenuView(arcade.View):
             game_view.setup()
 
             self.window.show_view(game_view)
-            # Run the game again
-            # arcade.run()
