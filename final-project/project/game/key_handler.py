@@ -20,8 +20,6 @@ class KeyHandler():
             # Quit immediately
             arcade.close_window()
 
-        # if symbol == arcade.key.P:
-        #    self.paused = not self.paused
         if symbol == arcade.key.W:
             self.player.change_y = 5
 
