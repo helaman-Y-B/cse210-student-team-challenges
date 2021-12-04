@@ -1,4 +1,5 @@
 import arcade
+import pathlib
 from game.screen import PongGame
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
 
@@ -16,7 +17,7 @@ class MainMenuView(arcade.View):
     def on_draw(self):
         """ Draw this view """
         arcade.start_render()
-        game_banner = arcade.load_texture("game/main_window/menu_img/pong.jpg")
+        game_banner = arcade.load_texture(pathlib.Path(__file__).parent / "menu_img/pong.jpg")
 
         arcade.draw_texture_rectangle(
             self.window.width / 2, self.window.height - 100, 600, 200, game_banner)
