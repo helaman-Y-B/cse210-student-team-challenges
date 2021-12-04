@@ -92,10 +92,10 @@ class PongGame(arcade.View):
 
         # Create ball
         ball = arcade.Sprite("game/img/ball.png", 0.25)
-        ball.center_x = random.randrange(100, 700)
-        ball.center_y = random.randrange(100, 500)
+        ball.center_x = random.randrange(499, 500)
+        ball.center_y = random.randrange(299, 300)
         while ball.change_x == 0 and ball.change_y == 0:
-            ball.change_x = random.randrange(-4, 5)
+            ball.change_x = random.randrange(-15, 15)
             ball.change_y = random.randrange(-4, 5)
 
         self.all_sprites.append(ball)
@@ -134,29 +134,27 @@ class PongGame(arcade.View):
             self.all_sprites[2], self.limit_list)
 
         for limit in limits_hit:
+
+            x_position = self.all_sprites[2]._get_center_x()
+            # print(x_position)
+
             if self.all_sprites[2].change_x > 0:
-                self.all_sprites[2].center_x = random.randrange(400, 500)
+                self.all_sprites[2].center_x = random.randrange(499, 500)
                 self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].top = limit.bottom
 
             elif self.all_sprites[2].change_x < 0:
-                self.all_sprites[2].center_x = random.randrange(400, 500)
+                self.all_sprites[2].center_x = random.randrange(499, 500)
                 self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].bottom = limit.top
 
-        x_position = self.all_sprites[2]._get_center_x()
-        print(f"Coordinates: {x_position}")
+            if x_position >= 740:
+                self.score_p1 += 1
+                #print("After p1 points")
 
-        if len(limits_hit) > 0:
-            self.all_sprites[2].change_x *= -1
-
-        if round(x_position) >= 740:
-            self.score_p1 += 1
-            print("After p1 points")
-
-        elif round(x_position) <= 54:
-            self.score_p2 += 1
-            print("After p2 points")
+            elif x_position <= 54:
+                self.score_p2 += 1
+                #print("After p2 points")
 
         # Keep the player on screen
         Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
