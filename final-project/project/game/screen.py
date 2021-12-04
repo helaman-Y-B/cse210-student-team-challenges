@@ -8,6 +8,7 @@ from game.update import Update
 from game.players import Players
 from game.box_draw import BoxDrawer
 from game.score import Score
+from game.winner_window.winner_message import WinnerView
 
 
 class PongGame(arcade.View):
@@ -185,6 +186,24 @@ class PongGame(arcade.View):
 
         elif x_position == 715.0:
             self.all_sprites[2].change_x = random.randrange(-10, -1)
+
+        if self.score_p2 == 5:
+            print("Player 2 Wins the game")
+            winner_view = WinnerView("2")
+            # Create a new Pong Game window
+            winner_view.setup()
+
+            self.window.show_view(winner_view)
+        
+        if self.score_p1 == 5:
+
+            print("Player 1 Wins the game")
+            winner_view = WinnerView("1")
+            # Create a new Pong Game window
+            winner_view.setup()
+
+            self.window.show_view(winner_view)
+
 
         # Keep the player on screen
         Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
