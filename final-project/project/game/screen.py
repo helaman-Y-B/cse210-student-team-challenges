@@ -1,5 +1,7 @@
 import arcade
 import random
+import time
+
 from game.key_handler import KeyHandler
 from game.on_draw import Draws
 from game.update import Update
@@ -48,6 +50,7 @@ class PongGame(arcade.View):
 
         self.output = ""
         self.collided = False
+        self.paused = False
         self.score_p1 = 0
         self.score_p2 = 0
 
@@ -62,9 +65,9 @@ class PongGame(arcade.View):
         arcade.set_background_color(arcade.color.GRAY)
 
         self.player1 = self._players.player_maker(
-            self.height, "game/img/player1_plataform.png", 10)
+            self.height, "game/img/player1_plataform.png", 20)
         self.player2 = self._players.player_maker(
-            self.height, "game/img/player2_plataform.png", 715)
+            self.height, "game/img/player2_plataform.png", 730)
 
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
@@ -95,7 +98,7 @@ class PongGame(arcade.View):
         ball.center_x = random.randrange(499, 500)
         ball.center_y = random.randrange(299, 300)
         while ball.change_x == 0 and ball.change_y == 0:
-            ball.change_x = random.randrange(-15, 15)
+            ball.change_x = random.randrange(-4, 5)
             ball.change_y = random.randrange(-4, 5)
 
         self.all_sprites.append(ball)
@@ -112,6 +115,9 @@ class PongGame(arcade.View):
         KeyHandler(self.player2).on_key_press_b(
             symbol, modifiers)
 
+        if symbol == arcade.key.P:
+            self.paused = not self.paused
+
     def on_key_release(self, symbol: int, modifiers: int):
         KeyHandler(self.player1).on_key_release_a(
             symbol, modifiers)
@@ -126,6 +132,16 @@ class PongGame(arcade.View):
             sprite.center_y = int(
                 sprite.center_y + sprite.change_y * delta_time
             )"""
+
+        # If paused, don't update anything
+        if self.paused:
+            self.players[0].center_y = 300
+            self.players[1].center_y = 300
+            self.all_sprites[2].center_y = 300
+            self.all_sprites[2].change_x = random.randrange(-4, 5)
+            time.sleep(2)
+            self.paused = False
+
         # Update everything
         self.all_sprites.update()
 
@@ -142,27 +158,33 @@ class PongGame(arcade.View):
                 self.all_sprites[2].center_x = random.randrange(499, 500)
                 self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].top = limit.bottom
+                # time.sleep(2)
 
             elif self.all_sprites[2].change_x < 0:
                 self.all_sprites[2].center_x = random.randrange(499, 500)
                 self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].bottom = limit.top
+                # time.sleep(2)
 
             if x_position >= 740:
                 self.score_p1 += 1
+                self.paused = True
                 #print("After p1 points")
 
             elif x_position <= 54:
                 self.score_p2 += 1
+                self.paused = True
                 #print("After p2 points")
 
         x_position = self.all_sprites[2]._get_center_x()
+        # print(x_position)
 
         if x_position <= 35:
             self.all_sprites[2].center_x = random.randrange(499, 500)
             self.all_sprites[2].center_y = random.randrange(300, 400)
 
-        # print(x_position)
+        elif x_position == 715.0:
+            self.all_sprites[2].change_x = random.randrange(-10, -1)
 
         # Keep the player on screen
         Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
