@@ -156,6 +156,14 @@ class PongGame(arcade.View):
                 self.score_p2 += 1
                 #print("After p2 points")
 
+        x_position = self.all_sprites[2]._get_center_x()
+
+        if x_position <= 35:
+            self.all_sprites[2].center_x = random.randrange(499, 500)
+            self.all_sprites[2].center_y = random.randrange(300, 400)
+
+        # print(x_position)
+
         # Keep the player on screen
         Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
                self.height).update(delta_time)
