@@ -14,6 +14,12 @@ class MainMenuView(arcade.View):
 
         arcade.set_viewport(0, self.window.width, 0, self.window.height)
 
+        background_music = arcade.load_sound(pathlib.Path(__file__).parent / "music/silly_creature_130_proud_music_preview.mp3")
+        print("sound start")
+        arcade.play_sound(background_music)
+        print("sound end")
+
+
     def on_draw(self):
         """ Draw this view """
         arcade.start_render()
@@ -47,8 +53,11 @@ class MainMenuView(arcade.View):
         arcade.draw_text("[ ↓ ] = Move Down", 600, self.window.height / 2-195,
                          arcade.color.WHITE, font_size=14, anchor_x="center", align="left")
 
+        arcade.draw_text("[ P ] = Re-Position the ball", self.window.width / 2, self.window.height / 2-225,
+                         arcade.color.WHITE, font_size=14, anchor_x="center", align="left")
+
         arcade.draw_text("Press [S] to Start Game and [Q] to end!", self.window.width / 2,
-                         self.window.height / 2 - 225, arcade.color.RED, font_size=20, anchor_x="center")
+                         self.window.height / 2 - 250, arcade.color.RED, font_size=20, anchor_x="center")
 
     def on_key_press(self, symbol: int, modifiers: int):
 
@@ -59,3 +68,5 @@ class MainMenuView(arcade.View):
             game_view.setup()
 
             self.window.show_view(game_view)
+        elif symbol == arcade.key.Q:
+            arcade.close_window()

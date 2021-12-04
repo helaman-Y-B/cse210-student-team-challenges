@@ -1,8 +1,6 @@
 import arcade
 import pathlib
-from game.screen import PongGame
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
-from game.main_window.mainmenuwindow import MainMenuView
 
 
 class WinnerView(arcade.View):
@@ -18,11 +16,6 @@ class WinnerView(arcade.View):
         arcade.set_background_color(arcade.csscolor.SKY_BLUE)
         arcade.set_viewport(0, self.window.width, 0, self.window.height)
 
-        winner_music = arcade.load_sound(pathlib.Path(__file__).parent / "sounds/mixkit-game-level-completed-2059.wav")
-        print("sound start")
-        arcade.play_sound(winner_music)
-        print("sound end")
-
     def on_draw(self):
         """ Draw this view """
         arcade.start_render()
@@ -36,7 +29,7 @@ class WinnerView(arcade.View):
         arcade.draw_text(winner_player, self.window.width / 2,
                          400, arcade.color.YELLOW, font_size=50, font_name = "Kenney Blocks", anchor_x="center")
         
-        instruction = "Press [M] to go to Main Menu"
+        instruction = "Press [M] to go close the window"
 
         arcade.draw_text(instruction, self.window.width / 2,
                         150, arcade.color.YELLOW, font_size=30, font_name="Kenney Future", anchor_x="center",  multiline=True, width=500, align="center")
@@ -44,9 +37,13 @@ class WinnerView(arcade.View):
     def on_key_press(self, symbol: int, modifiers: int):
         
         if symbol == arcade.key.M:
-            print("It will go to the main menu")
-            menu_view = MainMenuView()
+            print("It close the window")
+            arcade.close_window()
             # Create a new Pong Game window
-            menu_view.setup()
-
-            self.window.show_view(menu_view)
+    
+    def setup(self):
+        
+        winner_music = arcade.load_sound(pathlib.Path(__file__).parent / "sounds/mixkit-game-level-completed-2059.wav")
+        print("sound start")
+        arcade.play_sound(winner_music)
+        print("sound end")
