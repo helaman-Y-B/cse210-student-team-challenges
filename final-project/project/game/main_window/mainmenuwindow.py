@@ -63,7 +63,7 @@ class MainMenuView(arcade.View):
     def on_key_press(self, symbol: int, modifiers: int):
 
         if symbol == arcade.key.S:
-            print("Will start the game")
+            print("The game started")
             game_view = PongGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
             # Create a new Pong Game window
             game_view.setup()
