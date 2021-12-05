@@ -1,6 +1,7 @@
 import arcade
 import random
 import time
+import pathlib
 
 from game.key_handler import KeyHandler
 from game.on_draw import Draws
@@ -66,9 +67,9 @@ class PongGame(arcade.View):
         arcade.set_background_color(arcade.color.GRAY)
 
         self.player1 = self._players.player_maker(
-            self.height, "game/img/player1_plataform.png", 20)
+            self.height, "img/player1_plataform.png", 20)
         self.player2 = self._players.player_maker(
-            self.height, "game/img/player2_plataform.png", 730)
+            self.height, "img/player2_plataform.png", 730)
 
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
@@ -95,7 +96,8 @@ class PongGame(arcade.View):
                 y, self.height, self.width, "ytop"))
 
         # Create ball
-        ball = arcade.Sprite("game/img/ball.png", 0.25)
+        ball = arcade.Sprite(pathlib.Path(
+            __file__).parent / "img/ball.png", 0.25)
         ball.center_x = random.randrange(499, 500)
         ball.center_y = random.randrange(299, 300)
         while ball.change_x == 0 and ball.change_y == 0:
@@ -194,7 +196,7 @@ class PongGame(arcade.View):
             winner_view.setup()
 
             self.window.show_view(winner_view)
-        
+
         if self.score_p1 == 5:
 
             print("Player 1 Wins the game")
@@ -203,7 +205,6 @@ class PongGame(arcade.View):
             winner_view.setup()
 
             self.window.show_view(winner_view)
-
 
         # Keep the player on screen
         Update(self.all_sprites, self.wall_list, self.players, self.limit_list,

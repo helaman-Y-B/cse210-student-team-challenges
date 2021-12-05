@@ -1,4 +1,6 @@
 import arcade
+import pathlib
+
 from game.constants import SCALING
 
 
@@ -13,7 +15,8 @@ class Players():
 
     def player_maker(self, height, img_path, player_place):
         """This function will make the players."""
-        self.player = arcade.Sprite(img_path, SCALING)
+        self.player = arcade.Sprite(pathlib.Path(
+            __file__).parent / img_path, SCALING)
         self.player.center_y = height / 2
         self.player.left = player_place
 
