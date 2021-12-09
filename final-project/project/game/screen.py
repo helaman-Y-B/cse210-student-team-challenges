@@ -74,8 +74,6 @@ class PongGame(arcade.View):
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
 
-        # self.all_sprites.append(self.score)
-
         # Create horizontal rows of boxes
         for x in range(0, self.width):
             # Bottom edge
@@ -136,6 +134,8 @@ class PongGame(arcade.View):
                 sprite.center_y + sprite.change_y * delta_time
             )"""
 
+        count = 0
+
         # If paused, don't update anything
         if self.paused:
             self.players[0].center_y = 300
@@ -186,8 +186,9 @@ class PongGame(arcade.View):
             self.all_sprites[2].center_x = random.randrange(499, 500)
             self.all_sprites[2].center_y = random.randrange(300, 400)
 
-        elif x_position == 715.0:
-            self.all_sprites[2].change_x = random.randrange(-10, -1)
+        # We can use the following code to give a second chance for the players!
+        # elif x_position == 715.0:
+        #    self.all_sprites[2].change_x = random.randrange(-10, -1)
 
         if self.score_p2 == 5:
             print("Player 2 Wins the game")
