@@ -28,6 +28,7 @@ class KeyHandler():
                 self.player.change_y = -5
 
         elif power == "green":
+            # Inverts the player controls lol
             if symbol == arcade.key.W:
                 self.player.change_y = -5
 
@@ -53,6 +54,7 @@ class KeyHandler():
                 self.player.change_y = -5
 
         elif power == "green":
+            # Inverts the player controls lol
             if symbol == arcade.key.UP:
                 self.player.change_y = -5
 
