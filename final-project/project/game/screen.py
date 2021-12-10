@@ -5,6 +5,7 @@ import pathlib
 
 from game.key_handler import KeyHandler
 from game.on_draw import Draws
+from game.power_ups import PowerUps
 from game.update import Update
 from game.players import Players
 from game.box_draw import BoxDrawer
@@ -44,12 +45,16 @@ class PongGame(arcade.View):
         self.wall_list = arcade.SpriteList()
         self.limit_list = arcade.SpriteList()
         self.all_sprites = arcade.SpriteList()
+        self.power_ups = arcade.SpriteList()
+
         self._players = Players()
+        self._power_up = PowerUps()
 
         self.height = height
         self.width = width
         self.title = title
 
+        self.power = "no power"
         self.output = ""
         self.collided = False
         self.paused = False
@@ -71,8 +76,17 @@ class PongGame(arcade.View):
         self.player2 = self._players.player_maker(
             self.height, "img/player2_plataform.png", 730)
 
+        self.power_up1 = self._power_up.draw_power("img/power_up1.png")
+        self.power_up2 = self._power_up.draw_power("img/power_up2.png")
+        self.power_up3 = self._power_up.draw_power("img/power_up3.png")
+        self.power_up4 = self._power_up.draw_power("img/power_up4.png")
+
         self.all_sprites.append(self.player1)
         self.all_sprites.append(self.player2)
+        self.power_ups.append(self.power_up1)
+        self.power_ups.append(self.power_up2)
+        self.power_ups.append(self.power_up3)
+        self.power_ups.append(self.power_up4)
 
         # Create horizontal rows of boxes
         for x in range(0, self.width):
@@ -110,16 +124,23 @@ class PongGame(arcade.View):
         self.players.append(self.player2)
         self.ball.append(ball)
 
+        self.all_sprites.append(self.power_up1)
+        self.all_sprites.append(self.power_up2)
+        self.all_sprites.append(self.power_up3)
+        self.all_sprites.append(self.power_up4)
+
     def on_key_press(self, symbol, modifiers):
+
         KeyHandler(self.player1).on_key_press_a(
-            symbol, modifiers)
+            symbol, modifiers, self.power)
         KeyHandler(self.player2).on_key_press_b(
-            symbol, modifiers)
+            symbol, modifiers, self.power)
 
         if symbol == arcade.key.P:
             self.paused = not self.paused
 
     def on_key_release(self, symbol: int, modifiers: int):
+
         KeyHandler(self.player1).on_key_release_a(
             symbol, modifiers)
         KeyHandler(self.player2).on_key_release_b(
@@ -133,8 +154,6 @@ class PongGame(arcade.View):
             sprite.center_y = int(
                 sprite.center_y + sprite.change_y * delta_time
             )"""
-
-        count = 0
 
         # If paused, don't update anything
         if self.paused:
@@ -208,9 +227,11 @@ class PongGame(arcade.View):
             self.window.show_view(winner_view)
 
         # Keep the player on screen
-        Update(self.all_sprites, self.wall_list, self.players, self.limit_list,
-               self.height).update(delta_time)
+        returned_value = Update(self.all_sprites, self.wall_list, self.players, self.limit_list, self.power_ups,
+                                self.height).update(delta_time)
 
+        if returned_value == "green":
+            self.power = "green"
         self.draw()
 
     def draw(self):
