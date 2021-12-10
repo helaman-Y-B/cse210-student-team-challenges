@@ -6,14 +6,13 @@ import random
 
 class Update():
 
-    def __init__(self, all_sprites, wall_list, players_list, limit_list, height):
+    def __init__(self, all_sprites, wall_list, players_list, limit_list, power_ups, height):
         self.sprite = all_sprites
         self.height = height
         self.wall_list = wall_list
         self.players_list = players_list
         self.limit_list = limit_list
-
-        #self.player_score = None
+        self.power_up_list = power_ups
 
     def update(self, delta_time: float):
         """for sprite in self.all_sprites:
@@ -38,19 +37,6 @@ class Update():
         # if not(self.wall_hit_collided):
         #     arcade.close_window()
 
-        """This part was bugging the ball colision."""
-        #self.sprite[2].center_x += self.sprite[2].change_x
-        # walls_hit = arcade.check_for_collision_with_list(
-        #    self.sprite[2], self.wall_list)
-        # for wall in walls_hit:
-        #    if self.sprite[2].change_x > 0:
-        #        self.sprite[2].right = wall.left
-        #    elif self.sprite[2].change_x < 0:
-        #        self.sprite[2].left = wall.right
-        # if len(walls_hit) > 0:
-        #    self.sprite[2].change_x *= -1
-        #    print("Colision with wall the first")
-
         # Check colision of the ball with the players
         player_hit = arcade.check_for_collision_with_list(
             self.sprite[2], self.players_list)
@@ -65,9 +51,6 @@ class Update():
                 self.sprite[2].left = player.right
                 self.sprite[2].change_x = random.randrange(-10, -5)
                 self.sprite[2].change_y = random.randrange(-5, 5)
-
-            # self.sprite[2].change_x = 5  # random.randrange(-1, 3)
-            #self.sprite[2].change_y = random.randrange(-4, 5)
 
         if len(player_hit) > 0:
             self.sprite[2].change_x *= -1
@@ -95,17 +78,6 @@ class Update():
             #x_position = self.sprite[2]._get_center_x()
             #print(f"X: {x_position}")
 
-        # Check colision of the ball with the screen limits
-        # limits_hit = arcade.check_for_collision_with_list(
-        #    self.sprite[2], self.limit_list)
-        # for limit in limits_hit:
-        #    if self.sprite[2].change_y > 0:
-        #        self.sprite[2].top = limit.bottom
-        #    if self.sprite[2].change_y < 0:
-        #        self.sprite[2].bottom = limit.top
-        # if len(limits_hit) > 0:
-        #    self.sprite[2].change_y *= -1
-
         # Check colision of the player with the ball
         player_hit = arcade.check_for_collision_with_list(
             self.sprite[2], self.players_list)
@@ -123,7 +95,38 @@ class Update():
             self.sprite[0], self.wall_list)
         if len(player_inter) > 0:
             self.sprite[0].change_x *= -1
-            # print("touching")
+
+        # Handles power ups collisions.
+        if self.sprite[2].collides_with_list(self.power_up_list):
+
+            # Handles the red power up
+            if self.sprite[2].collides_with_sprite(self.power_up_list[0]):
+                self.power_up_list[0].remove_from_sprite_lists()
+                self.sprite[2].change_x *= -5
+                print("POWER UP!!")
+
+            # Handles the green power up
+            elif self.sprite[2].collides_with_sprite(self.power_up_list[1]):
+                self.sprite[2].change_y *= -1
+                self.power_up_list[1].remove_from_sprite_lists()
+                # Invert controls of the enemy player
+                self.sprite[2].change_x *= 10
+                print("POWER UP!!")
+                return "green"
+
+            # Handles the blue power up
+            elif self.sprite[2].collides_with_sprite(self.power_up_list[2]):
+                self.sprite[2].change_y *= -1
+                self.power_up_list[2].remove_from_sprite_lists()
+                self.sprite[2].change_x *= random.randrange(-5, 5)
+                print("POWER UP!!")
+
+            # Handles the yellow power up
+            elif self.sprite[2].collides_with_sprite(self.power_up_list[3]):
+                self.sprite[2].change_y *= -1
+                self.power_up_list[3].remove_from_sprite_lists()
+                self.sprite[2].change_x *= random.randrange(-5, 5)
+                print("POWER UP!!")
 
     def update_score(self):
         self.score += 1
