@@ -101,32 +101,35 @@ class Update():
 
             # Handles the red power up
             if self.sprite[2].collides_with_sprite(self.power_up_list[0]):
-                self.power_up_list[0].remove_from_sprite_lists()
-                self.sprite[2].change_x *= -5
+                self.power_up_list[0].center_x = 1000
+                #self.sprite[2].change_x *= -5
                 print("POWER UP!!")
+                return "red"
 
             # Handles the green power up
             elif self.sprite[2].collides_with_sprite(self.power_up_list[1]):
-                self.sprite[2].change_y *= -1
-                self.power_up_list[1].remove_from_sprite_lists()
-                # Invert controls of the enemy player
-                self.sprite[2].change_x *= 10
+                #self.sprite[2].change_y *= -1
+                self.power_up_list[1].center_x = 1000
+                # Invert controls of both players
+                #self.sprite[2].change_x *= 10
                 print("POWER UP!!")
                 return "green"
 
             # Handles the blue power up
             elif self.sprite[2].collides_with_sprite(self.power_up_list[2]):
-                self.sprite[2].change_y *= -1
-                self.power_up_list[2].remove_from_sprite_lists()
-                self.sprite[2].change_x *= random.randrange(-5, 5)
+                #self.sprite[2].change_y *= -1
+                self.power_up_list[2].center_x = 1000
+                #self.sprite[2].change_x *= random.randrange(-5, 5)
                 print("POWER UP!!")
+                return "blue"
 
             # Handles the yellow power up
             elif self.sprite[2].collides_with_sprite(self.power_up_list[3]):
-                self.sprite[2].change_y *= -1
-                self.power_up_list[3].remove_from_sprite_lists()
-                self.sprite[2].change_x *= random.randrange(-5, 5)
+                #self.sprite[2].change_y *= -1
+                self.power_up_list[3].center_x = 1000
+                #self.sprite[2].change_x *= random.randrange(-5, 5)
                 print("POWER UP!!")
+                return "yellow"
 
     def update_score(self):
         self.score += 1
