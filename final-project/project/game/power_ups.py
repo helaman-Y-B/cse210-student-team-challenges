@@ -1,6 +1,5 @@
 import arcade
 import pathlib
-import random
 
 
 class PowerUps():

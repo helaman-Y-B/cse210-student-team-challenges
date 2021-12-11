@@ -1,7 +1,6 @@
 import arcade
 import pathlib
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
-from game.main_window.mainmenuwindow import MainMenuView
 
 
 class WinnerView(arcade.View):
@@ -47,6 +46,5 @@ class WinnerView(arcade.View):
 
         winner_music = arcade.load_sound(pathlib.Path(
             __file__).parent / "sounds/mixkit-game-level-completed-2059.wav")
-        #print("sound start")
+
         arcade.play_sound(winner_music)
-        #print("sound end")
