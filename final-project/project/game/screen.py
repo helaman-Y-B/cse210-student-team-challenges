@@ -176,19 +176,16 @@ class PongGame(arcade.View):
         for limit in limits_hit:
 
             x_position = self.all_sprites[2]._get_center_x()
-            # print(x_position)
 
             if self.all_sprites[2].change_x > 0:
                 self.all_sprites[2].center_x = random.randrange(499, 500)
                 self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].top = limit.bottom
-                # time.sleep(2)
 
             elif self.all_sprites[2].change_x < 0:
                 self.all_sprites[2].center_x = random.randrange(499, 500)
                 self.all_sprites[2].center_y = random.randrange(300, 400)
                 self.all_sprites[2].bottom = limit.top
-                # time.sleep(2)
 
             if x_position >= 740:
                 if self.power == "no power":
@@ -206,7 +203,6 @@ class PongGame(arcade.View):
                 self.all_sprites[1].center_x = 750
                 self.all_sprites[0].center_x = 50
                 self.paused = True
-                #print("After p1 points")
 
             elif x_position <= 54:
                 if self.power == "no power":
@@ -224,18 +220,14 @@ class PongGame(arcade.View):
                 self.all_sprites[1].center_x = 750
                 self.all_sprites[0].center_x = 50
                 self.paused = True
-                #print("After p2 points")
 
         x_position = self.all_sprites[2]._get_center_x()
-        # print(x_position)
 
         if x_position <= 35:
             self.all_sprites[2].center_x = random.randrange(499, 500)
             self.all_sprites[2].center_y = random.randrange(300, 400)
 
         # We can use the following code to give a second chance for the players!
-        # elif x_position == 715.0:
-        #    self.all_sprites[2].change_x = random.randrange(-10, -1)
 
         if self.score_p2 == 5:
             print("Player 2 Wins the game")
@@ -260,7 +252,6 @@ class PongGame(arcade.View):
 
         if returned_value == "green":
             self.power = "green"
-            print("returned green")
 
         elif returned_value == "red":
             self.all_sprites[0].center_x = 100

@@ -1,8 +1,6 @@
 import arcade
 import random
 
-#from game.score import Score
-
 
 class Update():
 
@@ -34,8 +32,6 @@ class Update():
             self.sprite[1].bottom = 0
 
         # This part of code will close the screen if there is no bottom or top wall hit
-        # if not(self.wall_hit_collided):
-        #     arcade.close_window()
 
         # Check colision of the ball with the players
         player_hit = arcade.check_for_collision_with_list(

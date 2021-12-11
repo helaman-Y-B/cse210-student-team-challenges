@@ -1,5 +1,4 @@
 import arcade
-#from game.score import ScoreS
 
 
 class Draws():
@@ -12,7 +11,6 @@ class Draws():
     def on_draw(self):
         # Draw all the sprites.
         arcade.start_render()
-        # Score.draw_score(self)
         self.all_sprites.draw()
 
         arcade.draw_text(self.output, 10, 10)
