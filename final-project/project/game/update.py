@@ -54,9 +54,6 @@ class Update():
 
         if len(player_hit) > 0:
             self.sprite[2].change_x *= -1
-            #print("Colision with player")
-            #x_position = self.sprite[2]._get_center_x()
-            #print(f"X: {x_position}")
 
         # Check colision of the ball with the walls
         self.sprite[2].center_y += self.sprite[2].change_y
@@ -74,9 +71,6 @@ class Update():
 
         if len(walls_hit) > 0:
             self.sprite[2].change_y *= -1
-            #print("Colision with wall")
-            #x_position = self.sprite[2]._get_center_x()
-            #print(f"X: {x_position}")
 
         # Check colision of the player with the ball
         player_hit = arcade.check_for_collision_with_list(
@@ -100,35 +94,39 @@ class Update():
         if self.sprite[2].collides_with_list(self.power_up_list):
 
             # Handles the red power up
+            # The red orb gets the player closer to the center
             if self.sprite[2].collides_with_sprite(self.power_up_list[0]):
+
                 self.power_up_list[0].center_x = 1000
-                #self.sprite[2].change_x *= -5
-                print("POWER UP!!")
+
+                print("Let's get closer!!")
                 return "red"
 
             # Handles the green power up
+            # Invert controls of both players
             elif self.sprite[2].collides_with_sprite(self.power_up_list[1]):
-                #self.sprite[2].change_y *= -1
+
                 self.power_up_list[1].center_x = 1000
-                # Invert controls of both players
-                #self.sprite[2].change_x *= 10
-                print("POWER UP!!")
+
+                print("Oh no!! We are upside down!")
                 return "green"
 
             # Handles the blue power up
+            # Inverts the players sides
             elif self.sprite[2].collides_with_sprite(self.power_up_list[2]):
-                #self.sprite[2].change_y *= -1
+
                 self.power_up_list[2].center_x = 1000
-                #self.sprite[2].change_x *= random.randrange(-5, 5)
-                print("POWER UP!!")
+
+                print("Let's change sides!!")
                 return "blue"
 
             # Handles the yellow power up
+            # Make the paddles velocities
             elif self.sprite[2].collides_with_sprite(self.power_up_list[3]):
-                #self.sprite[2].change_y *= -1
+
                 self.power_up_list[3].center_x = 1000
-                #self.sprite[2].change_x *= random.randrange(-5, 5)
-                print("POWER UP!!")
+
+                print("Everybody is Slower!!")
                 return "yellow"
 
     def update_score(self):

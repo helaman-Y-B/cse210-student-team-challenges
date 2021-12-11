@@ -1,6 +1,7 @@
 import arcade
 import pathlib
 from game.constants import SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE
+from game.main_window.mainmenuwindow import MainMenuView
 
 
 class WinnerView(arcade.View):
