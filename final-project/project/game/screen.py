@@ -190,11 +190,13 @@ class PongGame(arcade.View):
 
             if x_position >= 740:
                 self.score_p1 += 1
+                self.power = "no power"
                 self.paused = True
                 #print("After p1 points")
 
             elif x_position <= 54:
                 self.score_p2 += 1
+                self.power = "no power"
                 self.paused = True
                 #print("After p2 points")
 
