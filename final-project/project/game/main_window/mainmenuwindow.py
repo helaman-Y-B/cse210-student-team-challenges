@@ -15,7 +15,7 @@ class MainMenuView(arcade.View):
         arcade.set_viewport(0, self.window.width, 0, self.window.height)
 
         background_music = arcade.load_sound(pathlib.Path(
-            __file__).parent / "music/silly_creature_130_proud_music_preview.mp3")
+            __file__).parent / "music/Child's Nightmare.ogg")
         print("sound start")
         arcade.play_sound(background_music)
         print("sound end")
