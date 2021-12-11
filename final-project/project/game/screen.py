@@ -113,8 +113,9 @@ class PongGame(arcade.View):
         ball.center_x = random.randrange(499, 500)
         ball.center_y = random.randrange(299, 300)
         while ball.change_x == 0 and ball.change_y == 0:
+            directions = [-4, -3, -2, -1, 1, 2, 3, 4, 5]
             ball.change_x = random.randrange(-4, 5)
-            ball.change_y = random.randrange(-4, 5)
+            ball.change_y = random.choice(directions)
 
         self.all_sprites.append(ball)
 
@@ -157,10 +158,11 @@ class PongGame(arcade.View):
 
         # If paused, don't update anything
         if self.paused:
+            directions = [-4, -3, -2, -1, 1, 2, 3, 4, 5]
             self.players[0].center_y = 300
             self.players[1].center_y = 300
             self.all_sprites[2].center_y = 300
-            self.all_sprites[2].change_x = random.randrange(-4, 5)
+            self.all_sprites[2].change_x = random.choice(directions)
             time.sleep(2)
             self.paused = False
 
@@ -189,14 +191,38 @@ class PongGame(arcade.View):
                 # time.sleep(2)
 
             if x_position >= 740:
-                self.score_p1 += 1
+                if self.power == "no power":
+                    self.score_p1 += 1
+                elif self.power == "blue":
+                    self.score_p2 += 1
+                else:
+                    self.score_p1 += 1
+                power_chance = random.randrange(1, 4)
+                self.power_ups[power_chance].center_x = random.randrange(
+                    200, 600)
+                self.power_ups[power_chance].center_y = random.randrange(
+                    200, 400)
                 self.power = "no power"
+                self.all_sprites[1].center_x = 750
+                self.all_sprites[0].center_x = 50
                 self.paused = True
                 #print("After p1 points")
 
             elif x_position <= 54:
-                self.score_p2 += 1
+                if self.power == "no power":
+                    self.score_p2 += 1
+                elif self.power == "blue":
+                    self.score_p1 += 1
+                else:
+                    self.score_p2 += 1
+                power_chance = random.randrange(0, 3)
+                self.power_ups[power_chance].center_x = random.randrange(
+                    200, 600)
+                self.power_ups[power_chance].center_y = random.randrange(
+                    200, 400)
                 self.power = "no power"
+                self.all_sprites[1].center_x = 750
+                self.all_sprites[0].center_x = 50
                 self.paused = True
                 #print("After p2 points")
 
@@ -234,6 +260,20 @@ class PongGame(arcade.View):
 
         if returned_value == "green":
             self.power = "green"
+            print("returned green")
+
+        elif returned_value == "red":
+            self.all_sprites[0].center_x = 100
+            self.all_sprites[1].center_x = 680
+
+        elif returned_value == "blue":
+            self.all_sprites[0].center_x = 750
+            self.all_sprites[1].center_x = 50
+            self.power = "blue"
+
+        elif returned_value == "yellow":
+            self.power = "yellow"
+
         self.draw()
 
     def draw(self):

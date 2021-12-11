@@ -17,7 +17,7 @@ class MainMenuView(arcade.View):
         background_music = arcade.load_sound(pathlib.Path(
             __file__).parent / "music/Child's Nightmare.ogg")
         print("sound start")
-        arcade.play_sound(background_music)
+        arcade.play_sound(background_music, looping=True)
         print("sound end")
 
     def on_draw(self):

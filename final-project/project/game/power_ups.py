@@ -10,8 +10,7 @@ class PowerUps():
     def draw_power(self, img_path):
         self.power = arcade.Sprite(pathlib.Path(
             __file__).parent / img_path, 0.25)
-        self.power.center_x = random.randrange(200, 600)
-        self.power.center_y = random.randrange(200, 400)
-        #self.power = player_place
+        self.power.center_x = 1000
+        self.power.center_y = 1000
 
         return self.power
